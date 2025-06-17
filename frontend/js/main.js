@@ -1,3 +1,4 @@
+import { uploadFile } from "./uploaded";
 
 
 const form = document.getElementById("uploadForm");
@@ -45,7 +46,7 @@ form.addEventListener("submit", async (event) => {
               progressBar.value = progress;
             });
 
-           const a = document.createElement("a");
+           const a = document. ("a");
             a.href = uploadedUrl;
             a.target = "_blank";
             a.textContent = `✔️ ${file.name}`;
