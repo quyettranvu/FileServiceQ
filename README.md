@@ -1,6 +1,6 @@
 # 📁 Backend
 
-Запускает приложение Spring Boot в ServicerApplication.java с помощью команды Run Java.
+Запускает приложение Spring Boot в ServicerApplication.java с помощью команды Run Java. (или запускает через: mvn spring-boot:run в директории FileServiceQ/backend/servicer)
 
 ---
 
