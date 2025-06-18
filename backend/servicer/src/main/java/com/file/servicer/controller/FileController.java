@@ -2,6 +2,7 @@ package com.file.servicer.controller;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -12,14 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.file.servicer.POJO.FileMetaData;
 import com.file.servicer.service.FileService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class FileController {
+    private static final String BACKEND_URL = "http://127.0.0.1:8080";
+
     @Autowired
     private FileService fileService;
 
@@ -34,7 +38,7 @@ public class FileController {
     public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException{
         try {
             String fileId = fileService.storeFile(file);
-            String downloadUrl = "/download/" + fileId;
+            String downloadUrl = BACKEND_URL + "/download/" + fileId;
             return Map.of("url", downloadUrl);
         } catch (IOException e) {
             throw new RuntimeException("Something went wrong with error:", e);
@@ -55,5 +59,15 @@ public class FileController {
         } catch (IOException e) {
             throw new RuntimeException("Something went wrong with error:", e);
         }
+    }
+
+    /**
+     * Endpoint to get statistics of all files.
+     *
+     * @return a list of FileMetaData containing metadata of all files
+     */
+    @GetMapping("/stats")
+    public List<FileMetaData> getStats() {
+        return fileService.getStats();
     }
 }

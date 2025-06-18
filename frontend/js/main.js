@@ -1,5 +1,4 @@
-import { uploadFile } from "./uploaded";
-
+import { uploadFile } from "./uploaded.js";
 
 const form = document.getElementById("uploadForm");
 const fileInput = document.getElementById("fileInput");
@@ -15,9 +14,9 @@ form.addEventListener("submit", async (event) => {
     progressBar.style.display = "none";
     progressBar.value = 0;
 
-    if (!file.length) {
-        status.content = "Please select at least one file to upload.";
-        return;
+    if (!files.length) {
+      status.content = "Please select at least one file to upload.";
+      return;
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
@@ -46,10 +45,11 @@ form.addEventListener("submit", async (event) => {
               progressBar.value = progress;
             });
 
-           const a = document. ("a");
+           const a = document.createElement("a");
             a.href = uploadedUrl;
             a.target = "_blank";
             a.textContent = `✔️ ${file.name}`;
+            a.download =file.name; //trigger download on click
             linkContainer.appendChild(a);
             linkContainer.appendChild(document.createElement("br"));
         } catch (error) {

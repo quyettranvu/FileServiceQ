@@ -9,9 +9,10 @@ import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+import com.file.servicer.repository.FileRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,17 @@ import com.file.servicer.POJO.FileMetaData;
 
 @Service
 public class FileService {
+
+    private final FileRepository fileRepository;
     private final Map<String, FileMetaData> fileStore = new ConcurrentHashMap<>();
     private final Path uploadDir = Paths.get("uploads");
 
     /**
      * Create directory for file uploads if it does not exist.
      */
-    public FileService() throws IOException {
+    public FileService(FileRepository fileRepository) throws IOException {
         Files.createDirectories(uploadDir);
+        this.fileRepository = fileRepository;
     }
 
     /**
@@ -48,7 +52,7 @@ public class FileService {
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         
         // Create metadata and store it, default now also downloaded
-        FileMetaData metaData = new FileMetaData(fileId, fileName, filePath.toString(), LocalDateTime.now());
+        FileMetaData metaData = new FileMetaData(fileId, fileName, filePath.toString(), LocalDateTime.now(), 0, "unknown");
         fileStore.put(fileId, metaData);
         
         return fileId;
@@ -101,5 +105,14 @@ public class FileService {
             }
             return false;
         });
+    }
+
+    /**
+     * Get the list of all file metadata.
+     *
+     * @return a list of FileMetaData objects
+     */
+    public List<FileMetaData> getStats() {
+        return fileRepository.findAll();
     }
 }
