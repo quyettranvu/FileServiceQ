@@ -8,7 +8,7 @@ export function uploadFile(file, onProgress) {
         const username = "user";
         const password = "1234";
 
-        xhr.setRequestHeader("Authorization", "Basic" + btoa(`${username}:${password}`));
+        xhr.setRequestHeader("Authorization", "Basic " + btoa(`${username}:${password}`));
         
         xhr.upload.addEventListener("progress", (event) => {
             if (event.lengthComputable) {

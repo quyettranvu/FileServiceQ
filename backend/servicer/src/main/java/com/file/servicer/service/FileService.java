@@ -26,7 +26,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final Map<String, FileMetaData> fileStore = new ConcurrentHashMap<>();
-    private final Path uploadDir = Paths.get("uploads");
+    private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads");
 
     /**
      * Create directory for file uploads if it does not exist.

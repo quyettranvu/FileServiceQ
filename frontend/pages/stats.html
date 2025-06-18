@@ -1,0 +1,36 @@
+<h2>📊 File Download Statistics</h2>
+<ul id="fileStatsList"></ul>
+
+<script>
+    fetch("http://127.0.0.1:8080/stats", {
+        headers: {
+            "Authorization": "Basic " + btoa("user:1234"),
+        },
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Failed to fetch stats");
+            }
+            return res.json();
+        })
+        .then(data => {
+            const list = document.getElementById("fileStatsList");
+            list.innerHTML = ""; // Clear existing content
+
+            if (data.length === 0) {
+                list.innerHTML = "<li>No files uploaded yet.</li>";
+                return;
+            }
+
+            data.forEach(file => {
+                const li = document.createElement("li");
+                li.textContent = `📄 ${file.fileName} — ${file.downloadCount} downloads`;
+                list.appendChild(li);
+            });
+        })
+        .catch(error => {
+            const list = document.getElementById("fileStatsList");
+            list.innerHTML = `<li style="color:red;">❌ ${error.message}</li>`;
+            console.error(error);
+        });
+</script>

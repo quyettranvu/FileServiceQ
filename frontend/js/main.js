@@ -61,3 +61,21 @@ form.addEventListener("submit", async (event) => {
 
     status.textContent = "All uploads completed.";
 })
+
+document.getElementById("viewStatsBtn").addEventListener("click", () => {
+  fetch("pages/stats.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load stats.html");
+      }
+      return response.text();
+    })
+    .then((html) => {
+      const statsContainer = document.getElementById("statsContainer");
+      statsContainer.innerHTML = html;
+      statsContainer.style.display = "block";
+    })
+    .catch((error) => {
+      console.error("Error loading stats page:", error);
+    });
+});
